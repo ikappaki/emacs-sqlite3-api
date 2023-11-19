@@ -32,7 +32,9 @@
 
 (require 'cl-lib)
 
-(defvar sqlite3-api-build-command '("make" "all"))
+(defvar sqlite3-api-build-command (if (getenv "NIX_PATH")
+                                      '("nix-shell" "-p" "sqlite.dev" "--run" "make all")
+                                    '("make" "all")))
 
 (cl-eval-when (load eval)
   (unless (require 'sqlite3-api nil t)
@@ -48,8 +50,8 @@
                      (mapconcat #'identity sqlite3-api-build-command " ")
                      (buffer-substring-no-properties
                       (point-min)
-                      (point-max))))
-            (require 'sqilte3-api)))
+                      (point-max)))))
+          (require 'sqlite3-api))
       (user-error "Abort"))))
 
 (provide 'sqlite3)
