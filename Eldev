@@ -5,4 +5,10 @@
 ;(eldev-use-package-archive 'nongnu-elpa)
 ;(eldev-use-package-archive 'melpa)
 
+(setf eldev-project-source-dirs ".")
+(setf eldev-files-to-package
+      `(:or ,eldev-files-to-package
+            '("./Makefile" "./consts.c" "./emacs-module.h" "./sqlite3-api.c" "!./tests" "!./tools")))
+
+
 (setf eldev-test-fileset "./tests/regression.el")
