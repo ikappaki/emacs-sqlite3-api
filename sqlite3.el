@@ -48,7 +48,8 @@
                      (mapconcat #'identity sqlite3-api-build-command " ")
                      (buffer-substring-no-properties
                       (point-min)
-                      (point-max))))))
+                      (point-max))))
+            (require 'sqilte3-api)))
       (user-error "Abort"))))
 
 (provide 'sqlite3)
