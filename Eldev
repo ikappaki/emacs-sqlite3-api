@@ -6,9 +6,12 @@
 ;(eldev-use-package-archive 'melpa)
 
 (setf eldev-project-source-dirs ".")
+(setf eldev-standard-excludes
+      `(:or ,eldev-standard-excludes "./tests/consts.el"))
 (setf eldev-files-to-package
       `(:or ,eldev-files-to-package
-            '("./Makefile" "./consts.c" "./emacs-module.h" "./sqlite3-api.c" "!./tests" "!./tools")))
+                  '("./Makefile" "./consts.c" "./emacs-module.h" "./sqlite3-api.c")))
+
 
 
 (setf eldev-test-fileset "./tests/regression.el")
