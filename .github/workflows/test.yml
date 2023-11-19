@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    # branches:
+    #   - master
+  pull_request:
+
+permissions:
+  contents: read #  to fetch code (actions/checkout)
+
+jobs:
+  integration:
+    # Run integration tests for all OSs and EMACS_VERSIONs.
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        # os: [macos-latest, ubuntu-latest, windows-latest]
+        # emacs_version: ['26.3', '27.2', '28.2', '29.1']
+        os: [ubuntu-latest]
+        emacs_version: ['29.1']
+
+    steps:
+    - name: Set up Emacs
+      if: "!startsWith (matrix.os, 'windows')"
+      uses: purcell/setup-emacs@master
+      with:
+        version: ${{matrix.emacs_version}}
+
+    - name: Set up Emacs on Windows
+      if: startsWith (matrix.os, 'windows')
+      uses: jcs090218/setup-emacs-windows@master
+      with:
+        version: ${{matrix.emacs_version}}
+
+    - name: Install Eldev
+      if: "!startsWith (matrix.os, 'windows')"
+      run: curl -fsSL https://raw.github.com/doublep/eldev/master/webinstall/github-eldev | sh
+
+    - name: Install Eldev on MS-Windows
+      if: startsWith (matrix.os, 'windows')
+      run: |
+        # Remove expired DST Root CA X3 certificate. Workaround
+        # for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=51038
+        # bug on Emacs 27.2.
+        gci cert:\LocalMachine\Root\DAC9024F54D8F6DF94935FB1732638CA6AD77C13
+        gci cert:\LocalMachine\Root\DAC9024F54D8F6DF94935FB1732638CA6AD77C13 | Remove-Item
+
+        curl.exe -fsSL https://raw.github.com/doublep/eldev/master/webinstall/github-eldev.bat | cmd /Q
+
+    - name: Check out the source code
+      uses: actions/checkout@v3
+
+
+    - name: Test
+      run: |
+        # The tests occasionally fail on macos&win in what is seems to
+        # be GH connectivity runner issues. We attempt to address this
+        # problem by rerunning the tests more than once.
+        eldev -p -dtTC test
