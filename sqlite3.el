@@ -32,9 +32,8 @@
 
 (require 'cl-lib)
 
-(defvar sqlite3-api-build-command (if (getenv "NIX_PATH")
-                                      '("nix-shell" "-p" "sqlite.dev" "--run" "make all")
-                                    '("make" "all")))
+(defvar sqlite3-api-build-command (or (getenv "SQLITE3_API_BUILD_COMMAND")
+                                      "make all"))
 
 (cl-eval-when (load eval)
   (unless (require 'sqlite3-api nil t)
@@ -43,9 +42,8 @@
         (let ((default-directory (file-name-directory (or load-file-name
                                                           buffer-file-name))))
           (with-temp-buffer
-            (unless (zerop (apply #'call-process
-                                  (car sqlite3-api-build-command) nil t t
-                                  (cdr sqlite3-api-build-command)))
+            (unless (zerop (call-process-shell-command
+                            sqlite3-api-build-command nil t t))
               (error "Failed to compile module using: %s: %s"
                      (mapconcat #'identity sqlite3-api-build-command " ")
                      (buffer-substring-no-properties
