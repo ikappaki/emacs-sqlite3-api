@@ -41,6 +41,7 @@
             (yes-or-no-p "sqlite3-api module must be built.  Do so now? "))
         (let ((default-directory (file-name-directory (or load-file-name
                                                           buffer-file-name))))
+          (message "building sqlite3-api module with %S" sqlite3-api-build-command)
           (with-temp-buffer
             (unless (zerop (call-process-shell-command
                             sqlite3-api-build-command nil t t))
@@ -49,6 +50,7 @@
                      (buffer-substring-no-properties
                       (point-min)
                       (point-max)))))
+          (message "loading sqlite3-api...")
           (require 'sqlite3-api))
       (user-error "Abort"))))
 
