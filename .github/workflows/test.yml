@@ -38,7 +38,7 @@ jobs:
       if: startsWith (matrix.os, 'windows')
       with:
         pacboy: >-
-          sqlite3:x
+          gcc:p sqlite3:x
 
     - name: Install Eldev
       if: "!startsWith (matrix.os, 'windows')"
@@ -70,7 +70,6 @@ jobs:
       if: startsWith (matrix.os, 'windows')
       shell: msys2 {0}
       run: |
-        gcc --version
         eldev.bat -p -dtTC test
 
       # if: startsWith (matrix.os, 'windows')
