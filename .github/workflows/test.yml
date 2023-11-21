@@ -63,4 +63,5 @@ jobs:
     - name: Test (MS-Windows)
       if: startsWith (matrix.os, 'windows')
       run: |
+        cc --version
         eldev -p -dtTC test

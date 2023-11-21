@@ -50,7 +50,7 @@
                      (buffer-substring-no-properties
                       (point-min)
                       (point-max)))))
-          (message "loading sqlite3-api...")
+          (message "loading sqlite3-api module...")
           (require 'sqlite3-api))
       (user-error "Abort"))))
 
