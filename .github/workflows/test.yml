@@ -38,7 +38,7 @@ jobs:
       if: startsWith (matrix.os, 'windows')
       with:
         install: >-
-          sqlite3
+          libsqlite-devel
 
     - name: Install Eldev
       if: "!startsWith (matrix.os, 'windows')"
