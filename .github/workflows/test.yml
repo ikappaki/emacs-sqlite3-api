@@ -34,11 +34,12 @@ jobs:
       with:
         version: ${{matrix.emacs_version}}
 
-    - uses: msys2/setup-msys2@v2
-      if: startsWith (matrix.os, 'windows')
-      with:
-        pacboy: >-
-          sqlite3:x
+    # - uses: msys2/setup-msys2@v2
+    #   if: startsWith (matrix.os, 'windows')
+    #   with:
+    #     pacboy: >-
+    #       sqlite3:x
+
 
     - name: Install Eldev
       if: "!startsWith (matrix.os, 'windows')"
@@ -47,6 +48,8 @@ jobs:
     - name: Install Eldev on MS-Windows
       if: startsWith (matrix.os, 'windows')
       run: |
+        pacman --noconfirm -S mingw-w64-x86_64-sqlite3
+
         # Remove expired DST Root CA X3 certificate. Workaround
         # for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=51038
         # bug on Emacs 27.2.
@@ -55,7 +58,8 @@ jobs:
 
         curl.exe -fsSL https://raw.github.com/doublep/eldev/master/webinstall/github-eldev.bat | cmd /Q
 
-    - name: Check out the source code
+
+- name: Check out the source code
       uses: actions/checkout@v3
 
 
