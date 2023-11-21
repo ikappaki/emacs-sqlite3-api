@@ -37,8 +37,8 @@ jobs:
     - uses: msys2/setup-msys2@v2
       if: startsWith (matrix.os, 'windows')
       with:
-        install: >-
-          libsqlite-devel
+        pacboy: >-
+          sqlite3:x
 
     - name: Install Eldev
       if: "!startsWith (matrix.os, 'windows')"
