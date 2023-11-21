@@ -34,20 +34,20 @@ jobs:
       with:
         version: ${{matrix.emacs_version}}
 
-    - name: install sqlite3 on MS-Windows
-      if: startsWith (matrix.os, 'windows')
-      run: |
-        iwr get.scoop.sh -outfile 'install.ps1'
-        .\install.ps1 -RunAsAdmin
-        scoop bucket add main
-        scoop install main/sqlite
-        (Resolve-Path ~\scoop\shims).Path >> $Env:GITHUB_PATH
-    # - uses: msys2/setup-msys2@v2
+    # - name: install sqlite3 on MS-Windows
     #   if: startsWith (matrix.os, 'windows')
-    #   with:
-    #     msystem: MINGW64
-    #     pacboy: >-
-    #       gcc:p emacs:p sqlite3:p
+    #   run: |
+    #     iwr get.scoop.sh -outfile 'install.ps1'
+    #     .\install.ps1 -RunAsAdmin
+    #     scoop bucket add main
+    #     scoop install main/sqlite
+    #     (Resolve-Path ~\scoop\shims).Path >> $Env:GITHUB_PATH
+    - uses: msys2/setup-msys2@v2
+      if: startsWith (matrix.os, 'windows')
+      with:
+        msystem: MINGW64
+        pacboy: >-
+          gcc:p emacs:p sqlite3:p tar:p
 
     - name: Install Eldev
       if: "!startsWith (matrix.os, 'windows')"
@@ -76,19 +76,21 @@ jobs:
         eldev -p -dtTC test
 
     - name: Test (MS-Windows)
-      if: startsWith (matrix.os, 'windows')
-      env:
-        CC: "gcc"
-      run: |
-        gcc --version
-        eldev -p -dtTC test
-
       # if: startsWith (matrix.os, 'windows')
-      # shell: msys2 {0}
+      # env:
+      #   CC: "gcc"
       # run: |
-      #   printenv
-      #   ls -al
-      #   $USERPROFILE/.local/bin/eldev.bat -p -dtTC test
+      #   $env
+      #   gcc --version
+      #   eldev -p -dtTC test
+
+      if: startsWith (matrix.os, 'windows')
+      shell: msys2 {0}
+      run: |
+        printenv
+        ls -al
+        which tar
+        $USERPROFILE/.local/bin/eldev.bat -p -dtTC test
 
       # if: startsWith (matrix.os, 'windows')
       # env:
