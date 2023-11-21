@@ -37,6 +37,7 @@ jobs:
     - uses: msys2/setup-msys2@v2
       if: startsWith (matrix.os, 'windows')
       with:
+        path-type: inherit
         pacboy: >-
           gcc:p sqlite3:x
 
