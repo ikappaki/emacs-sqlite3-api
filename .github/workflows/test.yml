@@ -28,7 +28,7 @@ jobs:
       with:
         version: ${{matrix.emacs_version}}
 
-    - name: Set up Emacs on Windows
+    - name: Set up Emacs (MS-Windows)
       if: startsWith (matrix.os, 'windows')
       uses: jcs090218/setup-emacs-windows@master
       with:
@@ -37,7 +37,6 @@ jobs:
     - uses: msys2/setup-msys2@v2
       if: startsWith (matrix.os, 'windows')
       with:
-        path-type: inherit
         pacboy: >-
           gcc:p sqlite3:x
 
@@ -45,7 +44,7 @@ jobs:
       if: "!startsWith (matrix.os, 'windows')"
       run: curl -fsSL https://raw.github.com/doublep/eldev/master/webinstall/github-eldev | sh
 
-    - name: Install Eldev on MS-Windows
+    - name: Install Eldev (MS-Windows)
       if: startsWith (matrix.os, 'windows')
       run: |
         # Remove expired DST Root CA X3 certificate. Workaround
@@ -73,7 +72,7 @@ jobs:
       run: |
         printenv
         ls -al
-        eldev.bat -p -dtTC test
+        $USERPROFILE/.local/bin/eldev.bat -p -dtTC test
 
       # if: startsWith (matrix.os, 'windows')
       # env:
