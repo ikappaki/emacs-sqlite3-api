@@ -60,7 +60,7 @@ jobs:
       run: |
         eldev -p -dtTC test
 
-    - name: Test MS-Windows
+    - name: Test (MS-Windows)
       if: startsWith (matrix.os, 'windows')
       run: |
         eldev -p -dtTC test

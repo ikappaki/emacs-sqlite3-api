@@ -46,7 +46,7 @@
             (unless (zerop (call-process-shell-command
                             sqlite3-api-build-command nil t t))
               (error "Failed to compile module using: %s: %s"
-                     (mapconcat #'identity sqlite3-api-build-command " ")
+                     sqlite3-api-build-command
                      (buffer-substring-no-properties
                       (point-min)
                       (point-max)))))
