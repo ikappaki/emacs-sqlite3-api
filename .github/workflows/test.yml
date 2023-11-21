@@ -34,11 +34,11 @@ jobs:
       with:
         version: ${{matrix.emacs_version}}
 
-    # - uses: msys2/setup-msys2@v2
-    #   if: startsWith (matrix.os, 'windows')
-    #   with:
-    #     pacboy: >-
-    #       sqlite3:x
+    - uses: msys2/setup-msys2@v2
+      if: startsWith (matrix.os, 'windows')
+      with:
+        pacboy: >-
+          sqlite3:x
 
     - name: Install Eldev
       if: "!startsWith (matrix.os, 'windows')"
@@ -68,10 +68,7 @@ jobs:
 
     - name: Test (MS-Windows)
       if: startsWith (matrix.os, 'windows')
-      uses: msys2/setup-msys2@v2
-      with:
-        pacboy: >-
-          sqlite3:x
+      shell: msys2 {0}
       run: |
         gcc --version
         eldev.bat -p -dtTC test
