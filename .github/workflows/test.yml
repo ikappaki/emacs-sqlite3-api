@@ -48,7 +48,7 @@ jobs:
       with:
         msystem: MINGW64
         pacboy: >-
-          gcc:p sqlite3:p tar
+          gcc:p sqlite3:p tar:
 
     - name: Install Eldev
       if: "!startsWith (matrix.os, 'windows')"
