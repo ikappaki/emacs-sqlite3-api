@@ -43,7 +43,7 @@ jobs:
     #     scoop install main/sqlite
     #     (Resolve-Path ~\scoop\shims).Path >> $Env:GITHUB_PATH
     - name: Install sqlite3
-    - uses: msys2/setup-msys2@v2
+      uses: msys2/setup-msys2@v2
       if: startsWith (matrix.os, 'windows')
       with:
         msystem: MINGW64
