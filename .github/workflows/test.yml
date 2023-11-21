@@ -59,7 +59,7 @@ jobs:
         curl.exe -fsSL https://raw.github.com/doublep/eldev/master/webinstall/github-eldev.bat | cmd /Q
 
 
-- name: Check out the source code
+    - name: Check out the source code
       uses: actions/checkout@v3
 
 
