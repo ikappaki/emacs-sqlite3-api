@@ -48,7 +48,6 @@ jobs:
       with:
         msystem: MINGW64
         location: D:\
-        release: false
         pacboy: >-
           gcc:p sqlite3:p
 
@@ -98,12 +97,12 @@ jobs:
       #   $USERPROFILE/.local/bin/eldev.bat -p -dtTC test
 
       if: startsWith (matrix.os, 'windows')
-      env:
-        CC: "gcc"
+      # env:
+      #   CC: "gcc"
       run: |
-        which gcc
-        $env:Path = "D:\msys64\mingw64\bin;" + $env:Path
-        printenv
-        which gcc
-        gcc --version
+        # which gcc
+        # $env:Path = "D:\msys64\mingw64\bin;" + $env:Path
+        # printenv
+        # which gcc
+        # gcc --version
         eldev -p -dtTC test
