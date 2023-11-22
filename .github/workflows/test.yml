@@ -49,9 +49,6 @@ jobs:
         msystem: MINGW64
         pacboy: >-
           gcc:p sqlite3:p
-      shell: msys2 {0}
-      run: |
-        cygpath -w `which gcc`
 
     - name: Install Eldev
       if: "!startsWith (matrix.os, 'windows')"
@@ -88,18 +85,18 @@ jobs:
       #   gcc --version
       #   eldev -p -dtTC test
 
-      # if: startsWith (matrix.os, 'windows')
-      # shell: msys2 {0}
-      # run: |
-        
-      #   printenv
-      #   ls -al
-      #   which tar
-      #   $USERPROFILE/.local/bin/eldev.bat -p -dtTC test
-
       if: startsWith (matrix.os, 'windows')
-      env:
-        CC: "gcc"
+      shell: msys2 {0}
       run: |
-        gcc --version
-        eldev -p -dtTC test
+        cygpath -w `which gcc`
+        printenv
+        ls -al
+        which tar
+        # $USERPROFILE/.local/bin/eldev.bat -p -dtTC test
+
+      # if: startsWith (matrix.os, 'windows')
+      # env:
+      #   CC: "gcc"
+      # run: |
+      #   gcc --version
+      #   eldev -p -dtTC test
