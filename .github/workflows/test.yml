@@ -47,6 +47,7 @@ jobs:
       if: startsWith (matrix.os, 'windows')
       with:
         msystem: MINGW64
+        location: D:\
         pacboy: >-
           gcc:p sqlite3:p
 
