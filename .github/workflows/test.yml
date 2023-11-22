@@ -19,7 +19,7 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
         # emacs_version: ['26.3', '27.2', '28.2', '29.1']
         # os: [windows-latest]
-        emacs_version: ['29.1']
+        emacs_version: ['28.2', '29.1']
 
     steps:
     - name: Set up Emacs
@@ -34,20 +34,12 @@ jobs:
       with:
         version: ${{matrix.emacs_version}}
 
-    # - name: install sqlite3 on MS-Windows
-    #   if: startsWith (matrix.os, 'windows')
-    #   run: |
-    #     iwr get.scoop.sh -outfile 'install.ps1'
-    #     .\install.ps1 -RunAsAdmin
-    #     scoop bucket add main
-    #     scoop install main/sqlite
-    #     (Resolve-Path ~\scoop\shims).Path >> $Env:GITHUB_PATH
-    - name: Install sqlite3
+    - name: Setup dev env (MS-Windows)
       uses: msys2/setup-msys2@v2
       if: startsWith (matrix.os, 'windows')
       with:
         msystem: MINGW64
-        location: D:\
+        # location: D:\
         pacboy: >-
           gcc:p sqlite3:p
 
@@ -73,36 +65,14 @@ jobs:
     - name: Test
       if: "!startsWith (matrix.os, 'windows')"
       env:
+        # purcell/setup-emacs releases are built with nix and as such
+        # we need to build the api with nix for binary compatibility.
         SQLITE3_API_BUILD_COMMAND: "nix-shell -p sqlite.dev --run \"make all\""
       run: |
         eldev -p -dtTC test
 
     - name: Test (MS-Windows)
-      # if: startsWith (matrix.os, 'windows')
-      # env:
-      #   CC: "gcc"
-      # run: |
-      #   $env
-      #   gcc --version
-      #   eldev -p -dtTC test
-
-      # if: startsWith (matrix.os, 'windows')
-      # shell: msys2 {0}
-      # run: |
-      #   cygpath -w `which gcc`
-      #   printenv
-      #   ls -al
-      #   which tar
-      #   D:\msys64\mingw64\bin
-      #   $USERPROFILE/.local/bin/eldev.bat -p -dtTC test
-
       if: startsWith (matrix.os, 'windows')
-      # env:
-      #   CC: "gcc"
       run: |
-        # which gcc
-        $env:Path = "D:\msys64\mingw64\bin;" + $env:Path
-        # printenv
-        # which gcc
-        # gcc --version
+        $env:Path = (cygpath -w /mingw64/bin) + ";" + $env:Path
         eldev -p -dtTC test
