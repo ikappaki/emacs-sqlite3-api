@@ -16,10 +16,10 @@ jobs:
 
     strategy:
       matrix:
-        # os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
         # emacs_version: ['26.3', '27.2', '28.2', '29.1']
-        os: [windows-latest]
-        emacs_version: ['29.1']
+        #os: [windows-latest]
+        emacs_version: ['28.2', '29.1']
 
     steps:
     - name: Set up Emacs
@@ -39,7 +39,7 @@ jobs:
       if: startsWith (matrix.os, 'windows')
       with:
         msystem: MINGW64
-        # location: D:\
+        location: D:\
         pacboy: >-
           gcc:p sqlite3:p
 
@@ -74,6 +74,6 @@ jobs:
     - name: Test (MS-Windows)
       if: startsWith (matrix.os, 'windows')
       run: |
-        $env:Path = (cygpath -w /mingw64/bin) + ";" + $env:Path
+        $env:Path = "D:\msys64\mingw64\bin;" + $env:Path
         printenv PATH
         eldev -p -dtTC test
