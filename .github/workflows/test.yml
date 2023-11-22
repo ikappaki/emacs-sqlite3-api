@@ -48,7 +48,7 @@ jobs:
       with:
         msystem: MINGW64
         location: D:\
-        # release: false
+        release: false
         pacboy: >-
           gcc:p sqlite3:p
 
@@ -101,6 +101,7 @@ jobs:
       env:
         CC: "gcc"
       run: |
+        which gcc
         $env:Path = "D:\msys64\mingw64\bin;" + $env:Path
         printenv
         which gcc
