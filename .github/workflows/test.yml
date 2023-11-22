@@ -101,7 +101,7 @@ jobs:
       env:
         CC: "gcc"
       run: |
-        $env:Path = "D:\msys64\mingw64\bin" + $env:Path
+        $env:Path = "D:\msys64\mingw64\bin;" + $env:Path
         printenv
         which gcc
         gcc --version
